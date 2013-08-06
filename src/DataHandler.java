@@ -71,7 +71,7 @@ public class DataHandler implements Runnable {
 			int diff = num-base;
 			
 			int interval = num/diff;
-			if(interval==1) interval = 2; // Incase base < temp.length/2
+			if(interval==1) interval = 2; //Incase base < temp.length/2
 
 			int current = 0;
 			while(current<temp.length) {
@@ -112,10 +112,8 @@ public class DataHandler implements Runnable {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

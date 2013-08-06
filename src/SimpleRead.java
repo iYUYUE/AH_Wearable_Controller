@@ -32,9 +32,6 @@
 
 import java.io.*;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.comm.*;
 
 public class SimpleRead implements Runnable, SerialPortEventListener {
