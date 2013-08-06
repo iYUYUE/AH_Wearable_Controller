@@ -62,11 +62,12 @@ public class DataHandler implements Runnable {
 		lastInput = reader.input;	//Store input for next comparison
 	}
 
-	public String featureReduction(String input, int base)
+	public String featureResize(String input, int base)
 	{
 		String output = "";
 		String[] temp = input.split(",");
 		int num = temp.length;
+		if (num*2<base) return null; // noise filter
 		while (num>base) {
 			int diff = num-base;
 			
@@ -97,7 +98,7 @@ public class DataHandler implements Runnable {
 					//File writing
 					FileWriter outputFile = new FileWriter("SampleData.txt", true);
 					PrintWriter printer = new PrintWriter(outputFile);
-					printer.print(featureReduction(output, 12) + "\\");
+					printer.print(featureResize(output, 12) + "\\");
 					
 					//Reset output and flag, close writers
 					output = "";
