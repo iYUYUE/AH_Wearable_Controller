@@ -61,6 +61,32 @@ public class DataHandler implements Runnable {
 		}
 		lastInput = reader.input;	//Store input for next comparison
 	}
+
+	public String featureReduction(String input, int base)
+	{
+		String output = "";
+		String[] temp = input.split(",");
+		int num = temp.length;
+		while (num>base) {
+			int diff = num-base;
+			
+			int interval = num/diff;
+			if(interval==1) interval = 2; // Incase base < temp.length/2
+
+			int current = 0;
+			while(current<temp.length) {
+				temp[current] = "-1";
+				current = current + interval;
+				num --;
+			}
+		}
+
+		for(String item : temp)
+	        if(!"-1".equals(item))
+	        	output=output+item+",";
+	    
+	    return output.substring(0,output.length()-1);
+	}
 	
 	public void run() {
 		try {
@@ -71,7 +97,7 @@ public class DataHandler implements Runnable {
 					//File writing
 					FileWriter outputFile = new FileWriter("SampleData.txt", true);
 					PrintWriter printer = new PrintWriter(outputFile);
-					printer.print(output + "\\");
+					printer.print(featureReduction(output, 12) + "\\");
 					
 					//Reset output and flag, close writers
 					output = "";
