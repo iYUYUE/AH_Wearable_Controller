@@ -47,13 +47,15 @@ public class SimpleRead implements Runnable, SerialPortEventListener {
 	String input;
 	String lastInput;
 
+	//Discover Serial Port and if COM8 is open, start listening the port and handling data
 	public static void main(String[] args) throws IOException, InterruptedException {
 		portList = CommPortIdentifier.getPortIdentifiers();
 
 		while (portList.hasMoreElements()) {
 			portId = (CommPortIdentifier) portList.nextElement();
 			if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-				// if (portId.getName().equals("COM1")) {
+				
+				//To choose one port. Now is COM8
 				if (portId.getName().equals("COM8")) {
 					SimpleRead reader = new SimpleRead();
 					DataHandler handler = new DataHandler(reader);
@@ -63,6 +65,7 @@ public class SimpleRead implements Runnable, SerialPortEventListener {
 		}
 	}
 
+	//Settings of COM8 (57600,8,1,odd)
 	public SimpleRead() {
 		try {
 			serialPort = (SerialPort) portId.open("SimpleReadApp", 2000);
@@ -83,18 +86,19 @@ public class SimpleRead implements Runnable, SerialPortEventListener {
 		} catch (UnsupportedCommOperationException e) {
 		}
 		input = "";
-		lastInput = "";
 		readThread = new Thread(this);
 		readThread.start();
 	}
-
+	
+	//Have nothing to do with the thread
 	public void run() {
 		try {
 			Thread.sleep(20000);
 		} catch (InterruptedException e) {
 		}
 	}
-
+	
+	//Event of the listener
 	public void serialEvent(SerialPortEvent event) {
 		switch (event.getEventType()) {
 		case SerialPortEvent.BI:
@@ -108,20 +112,15 @@ public class SimpleRead implements Runnable, SerialPortEventListener {
 		case SerialPortEvent.OUTPUT_BUFFER_EMPTY:
 			break;
 		case SerialPortEvent.DATA_AVAILABLE:
-			byte[] readBuffer = new byte[64];
+			byte[] readBuffer = new byte[64];	//Buffer size
 
 			try {
 				while (inputStream.available() > 0) {
-					int numBytes = inputStream.read(readBuffer);
-					if(lastInput.equals("")) {
-						input = new String(readBuffer);
-					}
-					else {
-						input = lastInput + new String(readBuffer);
-					}
-					input = input.replaceAll("(^[ |¡¡]*|[ |¡¡]*$)", "");
-					input = input.trim();
+					int numBytes = inputStream.read(readBuffer);	//Data length
+					input = new String(readBuffer);	//Read from buffer
+					input = input.trim();	//Delete space
 					
+					//For debugging
 					//System.out.println("number of bytes: " + numBytes + "\tcontent: " + input);
 				}
 			} catch (IOException e) {
