@@ -67,7 +67,7 @@ public class DataHandler implements Runnable {
 		String output = "";
 		String[] temp = input.split(",");
 		int num = temp.length;
-		if (num*2<base) return null; // noise filter
+		if (num*2<base) return ""; // noise filter
 		while (num>base) {
 			int diff = num-base;
 			
