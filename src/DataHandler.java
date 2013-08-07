@@ -62,13 +62,18 @@ public class DataHandler implements Runnable {
 		lastInput = reader.input;	//Store input for next comparison
 	}
 
-	public String featureResize(String input, int base)
+	public static String featureResize(String input, int base)
 	{
 		String output = "";
 		String[] temp = input.split(",");
 		int num = temp.length;
+<<<<<<< HEAD
 		if (num*2<base) return ""; // noise filter
 		while (num>base) {
+=======
+
+		if (num>base) {
+>>>>>>> featureResize loop revised
 			int diff = num-base;
 			
 			int interval = num/diff;
@@ -80,13 +85,17 @@ public class DataHandler implements Runnable {
 				current = current + interval;
 				num --;
 			}
-		}
 
-		for(String item : temp)
-	        if(!"-1".equals(item))
-	        	output=output+item+",";
+			for(String item : temp)
+		        if(!"-1".equals(item))
+		        	output=output+item+",";
+		    output = output.substring(0,output.length()-1);
+		} else {
+			if (num*2<base) return ""; // noise filter
+			output = input;
+		}
 	    
-	    return output.substring(0,output.length()-1);
+	    return (num>base)? featureResize(output, base):output;
 	}
 	
 	public void run() {
