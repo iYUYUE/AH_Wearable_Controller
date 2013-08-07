@@ -37,6 +37,9 @@ public class DataHandler implements Runnable {
 			//If redundant < 3, record
 			while(counter < 3) {
 				writable = false;	//down the flag to prevent file writing
+				if(reader.input.length() < 6){
+					break;
+				}
 				output = output + reader.input;	//record
 				System.out.println("content: " + output);	//Debugging
 				this.comparer(reader);	//Increase the counter
@@ -103,17 +106,16 @@ public class DataHandler implements Runnable {
 			while(true) {
 				//Write if the recording is pausing
 				if(writable) {
-					
 					//File writing
 					FileWriter outputFile = new FileWriter("SampleData.txt", true);
 					PrintWriter printer = new PrintWriter(outputFile);
-					printer.print(featureResize(output, 12) + "\\");
-					
+					printer.println(featureResize(output, 12) + "\\");
 					//Reset output and flag, close writers
 					output = "";
 					writable = false;
 					printer.close();
 					outputFile.close();
+					Thread.sleep(1000);
 				}
 				else {
 					Thread.sleep(50);	//wait if still recording

@@ -37,7 +37,7 @@ int outputValueZ = 1;
 
 void setup() {
   // initialize serial communications at 9600 bps:
-  Serial1.begin(57600, SERIAL_8O1); 
+  Serial1.begin(115200); 
   pinMode(digitalOutPinZ, OUTPUT);
   pinMode(digitalInPinZ, INPUT);
 }
@@ -71,5 +71,5 @@ void loop() {
   // wait 2 milliseconds before the next loop
   // for the analog-to-digital converter to settle
   // after the last reading:
-  delay(50);                     
+  delay(20);                     
 }

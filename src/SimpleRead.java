@@ -78,11 +78,12 @@ public class SimpleRead implements Runnable, SerialPortEventListener {
 		}
 		serialPort.notifyOnDataAvailable(true);
 		try {
-			serialPort.setSerialPortParams(57600, SerialPort.DATABITS_8,
-					SerialPort.STOPBITS_1, SerialPort.PARITY_ODD);
+			serialPort.setSerialPortParams(115200, SerialPort.DATABITS_8,
+					SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
 		} catch (UnsupportedCommOperationException e) {
 		}
 		input = "";
+		lastInput = "";
 		readThread = new Thread(this);
 		readThread.start();
 	}
@@ -114,8 +115,7 @@ public class SimpleRead implements Runnable, SerialPortEventListener {
 			try {
 				while (inputStream.available() > 0) {
 					int numBytes = inputStream.read(readBuffer);	//Data length
-					input = new String(readBuffer);	//Read from buffer
-					input = input.trim();	//Delete space
+					input = new String(readBuffer).trim();
 					
 					//For debugging
 					//System.out.println("number of bytes: " + numBytes + "\tcontent: " + input);
