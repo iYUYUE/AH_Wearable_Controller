@@ -37,6 +37,9 @@ public class DataHandlerSun implements Runnable {
 			//If redundant < 3, record
 			while(counter < 3) {
 				writable = false;	//down the flag to prevent file writing
+				if(reader.input.length() < 6){
+					break;
+				}
 				output = output + reader.input;	//record
 				System.out.println("content: " + output);	//Debugging
 				this.comparer(reader);	//Increase the counter
@@ -62,16 +65,17 @@ public class DataHandlerSun implements Runnable {
 		lastInput = reader.input;	//Store input for next comparison
 	}
 
-	public String featureReduction(String input, int base)
+	public static String featureResize(String input, int base)
 	{
 		String output = "";
 		String[] temp = input.split(",");
 		int num = temp.length;
-		while (num>base) {
+
+		if (num>base) {
 			int diff = num-base;
 			
 			int interval = num/diff;
-			if(interval==1) interval = 2; // Incase base < temp.length/2
+			if(interval==1) interval = 2; //Incase base < temp.length/2
 
 			int current = 0;
 			while(current<temp.length) {
@@ -79,13 +83,17 @@ public class DataHandlerSun implements Runnable {
 				current = current + interval;
 				num --;
 			}
-		}
 
-		for(String item : temp)
-	        if(!"-1".equals(item))
-	        	output=output+item+",";
+			for(String item : temp)
+		        if(!"-1".equals(item))
+		        	output=output+item+",";
+		    output = output.substring(0,output.length()-1);
+		} else {
+			if (num*2<base) return ""; // noise filter
+			output = input;
+		}
 	    
-	    return output.substring(0,output.length()-1);
+	    return (num>base)? featureResize(output, base):output;
 	}
 	
 	public void run() {
@@ -93,17 +101,16 @@ public class DataHandlerSun implements Runnable {
 			while(true) {
 				//Write if the recording is pausing
 				if(writable) {
-					
 					//File writing
 					FileWriter outputFile = new FileWriter("SampleData.txt", true);
 					PrintWriter printer = new PrintWriter(outputFile);
-					printer.print(featureReduction(output, 12) + "\\");
-					
+					printer.println(featureResize(output, 12) + "\\");
 					//Reset output and flag, close writers
 					output = "";
 					writable = false;
 					printer.close();
 					outputFile.close();
+					Thread.sleep(1000);
 				}
 				else {
 					Thread.sleep(50);	//wait if still recording
@@ -112,10 +119,8 @@ public class DataHandlerSun implements Runnable {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
