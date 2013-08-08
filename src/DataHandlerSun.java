@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class DataHandler implements Runnable {
+public class DataHandlerSun implements Runnable {
 	Thread handleThread;
 	String lastInput;
 	String output;
@@ -12,7 +12,7 @@ public class DataHandler implements Runnable {
 	int counter;
 	
 	//Constructor
-	public DataHandler(SimpleRead reader) throws IOException, InterruptedException {
+	public DataHandlerSun(SimpleRead reader) throws IOException, InterruptedException {
 		
 		//Initialize variables
 		lastInput = "";

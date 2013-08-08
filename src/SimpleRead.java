@@ -58,7 +58,7 @@ public class SimpleRead implements Runnable, SerialPortEventListener {
 				//To choose one port. Now is COM8
 				if (portId.getName().equals("COM8")) {
 					SimpleRead reader = new SimpleRead();
-					DataHandler handler = new DataHandler(reader);
+					DataHandlerSun handler = new DataHandlerSun(reader);
 					System.out.println("reached.");
 				}
 			}
