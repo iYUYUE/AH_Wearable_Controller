@@ -27,7 +27,7 @@ public class demo {
 
     // System.out.println("Output Data:");
     for(int r = 0; r < transformedData.getRowDimension(); r++){
-      printer.print(originalData.get(r, originalData.getColumnDimension()-1)+" ");
+      printer.print((int)originalData.get(r, originalData.getColumnDimension()-1)+" ");
       for(int c = 0; c < transformedData.getColumnDimension(); c++){
         printer.print(c+1+":"+formatter.format(transformedData.get(r,c))+" ");
 
