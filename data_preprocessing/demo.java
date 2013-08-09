@@ -8,6 +8,7 @@ import java.text.DecimalFormat;
 public class demo {
 
   public static void main( String[ ] args ) throws IOException {
+    // System.out.println(args[0]);
     FeatureMap test = new FeatureMap();
     DecimalFormat formatter = new DecimalFormat("0.000000");
 
