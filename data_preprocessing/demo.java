@@ -11,7 +11,7 @@ public class demo {
     FeatureMap test = new FeatureMap();
     DecimalFormat formatter = new DecimalFormat("0.000000");
 
-    String trainingDataPath = "./data/test1.csv";
+    String trainingDataPath = "./data/sample/SampleData_up.txt";
     Matrix originalData = DataReader.read(test.getFile(trainingDataPath));
     Matrix trainingData = originalData.getMatrix(0, originalData.getRowDimension()-1, 0, originalData.getColumnDimension()-2);
 
@@ -22,7 +22,7 @@ public class demo {
     Matrix transformedData =
       pca.transform(trainingData, PCA.TransformationType.WHITENING);
 
-    FileWriter outputFile = new FileWriter("PreProcessed", true);
+    FileWriter outputFile = new FileWriter("./data/sample/pp/SampleData_up", true);
     PrintWriter printer = new PrintWriter(outputFile);
 
     // System.out.println("Output Data:");

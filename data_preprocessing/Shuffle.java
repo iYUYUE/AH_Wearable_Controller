@@ -28,7 +28,10 @@
  *
  *
  *************************************************************************/
-
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 public class Shuffle { 
 
     // swaps array elements i and j
@@ -55,24 +58,44 @@ public class Shuffle {
     }
 
 
-    public static void main(String[] args) { 
-        int N = Integer.parseInt(args[0]);
-        String[] a = new String[N];
+    public static void main(String[] args) throws IOException {
 
-        // read in data
-        for (int i = 0; i < N; i++) {
-            a[i] = StdIn.readLine();
+        int N = 481;
+        int i = 0;
+        String[] a = new String[N];
+        
+        BufferedReader br = new BufferedReader(new FileReader("./data/sample/pp/SampleData_mix"));
+        String line;
+        while ((line = br.readLine()) != null) {
+           a[i] = line;
+           i++;
         }
+        br.close();
 
         // shuffle array and print permutation
         shuffle(a);
-        show(a);
-
-        System.out.println();
-
-        // do it again
         shuffle(a);
-        show(a);
+
+        PrintWriter printer1 = new PrintWriter("./data/sample/pp/SampleData_mix_trainning");
+        for (i=0; i<a.length/2; i++) {
+            printer1.println(a[i]);
+        }
+        printer1.close();
+
+        PrintWriter printer2 = new PrintWriter("./data/sample/pp/SampleData_mix_crossValidate");
+        for (i=a.length/2; i<a.length*3/4; i++) {
+            printer2.println(a[i]);
+        }
+        printer2.close();
+
+        PrintWriter printer3 = new PrintWriter("./data/sample/pp/SampleData_mix_testing");
+        for (i=a.length*3/4; i<a.length; i++) {
+            printer3.println(a[i]);
+        }
+        printer3.close();
+
+        
+        
 
     }
 }
