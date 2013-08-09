@@ -1,6 +1,4 @@
 import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.InputStreamReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -16,11 +14,10 @@ public class textData {
 
 	    String line;
 
-	    FeatureMap test = new FeatureMap();
-	    DataInputStream in = new DataInputStream(test.getFile(argv[0]));
-		BufferedReader rd = new BufferedReader(new InputStreamReader(in));
+	    BufferedReader rd = new BufferedReader(new FileReader(argv[0]));
 	    
 		PrintWriter wr =new PrintWriter(new FileWriter("./copy.txt"));
+
 		while(true){
 			line = rd.readLine();
 			
