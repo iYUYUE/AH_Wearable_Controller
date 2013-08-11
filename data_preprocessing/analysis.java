@@ -7,7 +7,7 @@ public class analysis {
 
   public static void main( String[ ] args ) throws IOException {
 
-    int N = 121;
+    int N = 370; // output lines
     int i;
     double[] a = new double[N];
     double[] b = new double[N];
