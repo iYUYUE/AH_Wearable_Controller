@@ -4,6 +4,8 @@ import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 
+
+
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,6 +22,8 @@ import java.util.LinkedList;
 public class ReadHandleWithRXTX
 {
     static DataHandler handler;
+    svm_predict demo;
+    
     static LinkedList<String> buffer = new LinkedList<String>();
     public ReadHandleWithRXTX()
     {
@@ -43,12 +47,10 @@ public class ReadHandleWithRXTX
                 serialPort.setSerialPortParams(9600,SerialPort.DATABITS_8,SerialPort.STOPBITS_1,SerialPort.PARITY_NONE);
                 
                 InputStream in = serialPort.getInputStream();
-                OutputStream out = serialPort.getOutputStream();
-                               
-                (new Thread(new SerialWriter(out))).start();
                 
                 serialPort.addEventListener(new SerialReader(in));
                 serialPort.notifyOnDataAvailable(true);
+                demo = new svm_predict("SampleData_mix_trainning.model");
                 handler = new DataHandler(buffer);
                 handler.run();
 
@@ -105,6 +107,8 @@ public class ReadHandleWithRXTX
 				//System.out.println("number of bytes: " + len + "\tcontent: " + input);
             	if(buffer.size() == 12) {
             		handler.write();
+            		// Thread.sleep(50);	//for data to file
+            		Thread.sleep(150);	//for real-time prediction
             	}
             }
             catch ( IOException | InterruptedException e )
@@ -122,16 +126,16 @@ public class ReadHandleWithRXTX
     	String lastOutput;
     	boolean writable;
     	LinkedList<String> buffer;
+    	int index;
+    	double sample[];
     	
     	public DataHandler(LinkedList<String> buffer) throws IOException, InterruptedException {
     		this.buffer = buffer;
     		writable = true;
     		//Initialize variables
-//    		lastInput = "";
     		output = "";
     		lastOutput = "";
-    		
-    	//	stopper(reader);	//Start determine whether pause or record
+    		index = 0;
     	}
 		@Override
 		public void run() {
@@ -143,6 +147,27 @@ public class ReadHandleWithRXTX
     		}
 		}
 		
+		public void write() throws InterruptedException, IOException {
+			
+			//processing on input data, from string to double[]
+			for(int i = 0;i < buffer.size();i++) {
+				output += buffer.get(i);
+			}
+			output = output.replaceAll("32,31,","");
+			output = "32,31," + output + "32,31,";
+			String parseToDouble[] = output.split(",");
+			sample = new double[parseToDouble.length];
+			for (int i = 0; i < sample.length; i++)
+		     {
+		        sample[i] = Double.parseDouble(parseToDouble[i]);
+		     }
+			
+			System.out.println(demo.predict(sample));
+			//System.out.println("32,31," + output + "32,31" + "\\");
+			output = "";
+		}
+		
+		/* A writer for record data into files
 		private boolean writable() {
 			for(int i = 0;i < buffer.size();i++) {
 				output += buffer.get(i);
@@ -155,74 +180,45 @@ public class ReadHandleWithRXTX
 				return true;
 			}
 		}
-		public void write() throws InterruptedException {
-			try {
-//				while(true) {
-//					//Write if the recording is pausing
-					if(writable()) {
-						output = output.replaceAll("32,31,","");
-						System.out.println("32,31," + output + "32,31" + "\\");
-						//File writing
+		
+		public void write() throws InterruptedException, IOException {
+			if(writable()) {
+				//System.out.println(index++);
+				output = output.replaceAll("32,31,","");
+				//File writing
+				FileWriter outputFile = new FileWriter("SampleData.txt", true);
+				PrintWriter printer = new PrintWriter(outputFile);
+				//Reset output and flag, close writers
+				printer.println("32,31," + output + "32,31" + ",4");
+				System.out.println("32,31," + output + "32,31,");
+				output = "";
+				writable = false;
+				printer.close();
+				outputFile.close();
+				Thread.sleep(20);
+			}
+			else {
 						FileWriter outputFile = new FileWriter("SampleData.txt", true);
 						PrintWriter printer = new PrintWriter(outputFile);
-						//printer.println(featureResize(output, 12) + "\\");
-						//Reset output and flag, close writers
-						printer.println("32,31," + output + "32,31" + "\\");
 						output = "";
-						//writable = false;
+						printer.println("\\");
+				System.out.println("pausing...");
 						printer.close();
 						outputFile.close();
-						Thread.sleep(50);
-					}
-					else {
-						output = "";
-						System.out.println("pausing...");
-					}
-					
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+				Thread.sleep(20);
 			}
 		}
     	
     }
-    
-    /** */
-    public static class SerialWriter implements Runnable 
-    {
-        OutputStream out;
-        
-        public SerialWriter ( OutputStream out )
-        {
-            this.out = out;
-        }
-        
-        public void run ()
-        {
-            try
-            {                
-                int c = 0;
-                while ( ( c = System.in.read()) > -1 )
-                {
-                    this.out.write(c);
-                }                
-            }
-            catch ( IOException e )
-            {
-                e.printStackTrace();
-                System.exit(-1);
-            }            
-        }
+    */
     }
-    
-
     
     public static void main ( String[] args )
     {
         try
         {
             (new ReadHandleWithRXTX()).connect("COM8");
+            
         }
         catch ( Exception e )
         {

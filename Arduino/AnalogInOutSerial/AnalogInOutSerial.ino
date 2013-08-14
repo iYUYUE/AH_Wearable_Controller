@@ -18,7 +18,7 @@
  This example code is in the public domain.
  
  */
-
+#include <MeetAndroid.h>
 // These constants won't change.  They're used to give names
 // to the pins used:
 const int analogInPinY = A0;  // Analog input pin that the potentiometer is attached to
@@ -34,15 +34,20 @@ int sensorValueX = 0;        // value read from the pot
 int outputValueX = 0;        // value output to the PWM (analog out)
 int outputValueZ = 1;
 
+MeetAndroid meetAndroid;
 
 void setup() {
   // initialize serial communications at 9600 bps:
-  Serial1.begin(115200); 
+  Serial.begin(9600);
+  Serial1.begin(9600); 
   pinMode(digitalOutPinZ, OUTPUT);
   pinMode(digitalInPinZ, INPUT);
 }
 
 void loop() {
+  
+  meetAndroid.receive(); // you need to keep this in your loop() to receive events
+  
   // read the analog in value:
   sensorValueY = analogRead(analogInPinY); 
   sensorValueX = analogRead(analogInPinX);
@@ -53,6 +58,9 @@ void loop() {
   // change the analog out value:
   analogWrite(analogOutPinY, outputValueY);  
   analogWrite(analogOutPinX, outputValueX); 
+  
+  meetAndroid.send(sensorValueX);
+  meetAndroid.send(sensorValueY);
 
   if(digitalRead(digitalInPinZ)){
     digitalWrite(digitalOutPinZ, LOW);
@@ -71,5 +79,5 @@ void loop() {
   // wait 2 milliseconds before the next loop
   // for the analog-to-digital converter to settle
   // after the last reading:
-  delay(20);                     
+  delay(100);                     
 }
