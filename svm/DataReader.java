@@ -61,6 +61,31 @@ public class DataReader {
 					vector[i] = tempRow[i];
 				vector[tempRow.length] = Double.parseDouble(elems[elemsNo]);
 				vectors.add(vector);
+
+				vector[0] = 32;
+				vector[1] = 31;
+				for(int i = 2; i < tempRow.length; i++)
+					vector[i] = tempRow[i-2];
+				vectors.add(vector);
+
+				vector[2] = 32;
+				vector[3] = 31;
+				for(int i = 4; i < tempRow.length; i++)
+					vector[i] = tempRow[i-4];
+				vectors.add(vector);
+
+				vector[tempRow.length-2] = 32;
+				vector[tempRow.length-1] = 31;
+				for(int i = 0; i < tempRow.length-2; i++)
+					vector[i] = tempRow[i+2];
+				vectors.add(vector);
+
+				vector[tempRow.length-4] = 32;
+				vector[tempRow.length-3] = 31;
+				for(int i = 0; i < tempRow.length-4; i++)
+					vector[i] = tempRow[i+4];
+				vectors.add(vector);
+
 			}
 		}
 		
