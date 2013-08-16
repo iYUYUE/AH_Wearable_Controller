@@ -41,7 +41,7 @@ public class demo {
     }
 
     int N = transformedData.getRowDimension();
-    System.out.println(N);
+    // System.out.println(N);
 
     printer.close();
 

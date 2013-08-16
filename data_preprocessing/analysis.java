@@ -7,7 +7,7 @@ public class analysis {
 
   public static void main( String[ ] args ) throws IOException {
 
-    int N = 370; // output lines
+    int N = 1848; // output lines
     int i;
     double[] a = new double[N];
     double[] b = new double[N];
@@ -26,7 +26,7 @@ public class analysis {
     br1.close();
 
     i = 0;
-    BufferedReader br2 = new BufferedReader(new FileReader("./data/analysis/SampleData_output"));
+    BufferedReader br2 = new BufferedReader(new FileReader("./data/analysis/SampleData.output"));
     while ((line = br2.readLine()) != null) {
        b[i] = Double.parseDouble(line);
        i++;
