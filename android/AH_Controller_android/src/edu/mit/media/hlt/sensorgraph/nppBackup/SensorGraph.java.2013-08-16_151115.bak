@@ -189,29 +189,25 @@ public class SensorGraph extends Activity {
     	String output;
     	double sample[];
     	svm_predict demo;
-		vote voter;
 		
 		
     	public DataHandler() throws IOException, InterruptedException {
-    		//debugging
-			System.out.println("Okay!");
-			
-			//initialize voter for judgement on redundant results after an action
-			voter = new vote();
-			
-			//initialize svm
     		AssetManager assetManager = getAssets();
+    		
+			System.out.println("Okay!");
     		InputStream sampleDataMix = assetManager.open("data/sampledata_mix.csv");
     		InputStream trainedModel = assetManager.open("data/sampledata_mix_trainning.model");
+
     		InputStreamReader tempISR = new InputStreamReader(trainedModel);
-    		BufferedReader tempBuffer = new BufferedReader(tempISR);			
+    		BufferedReader tempBuffer = new BufferedReader(tempISR);
+    		
 			try {
 				demo = new svm_predict(tempBuffer, sampleDataMix);
 			} catch (IOException e1) {
+				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
-    		//Initialize fields
+    		//Initialize variables
     		output = "";
     		lastResult = 0;
     	}
@@ -239,17 +235,18 @@ public class SensorGraph extends Activity {
 		     {
 		        sample[i] = Double.parseDouble(parseToDouble[i]);
 		     }
-			int i= (int) demo.predict(sample);
+			double i=demo.predict(sample);
 //			System.out.println(output);
-			System.out.println(i);
-			buttonMove(vote.sendToJudge(i););
+			System.out.println(demo.predict(sample));
+			if(i != lastResult)
+			buttonMove(i);
 			output = "";
 		}
 	}
 	
 	
-		protected void buttonMove(int m){
-			int n = m;
+		protected void buttonMove(double m){
+			int n =(int)m;
 			
 			switch(n){
 				case 1: 
