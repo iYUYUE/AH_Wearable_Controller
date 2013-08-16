@@ -242,9 +242,8 @@ public class SensorGraph extends Activity {
 			double i=demo.predict(sample);
 			System.out.println(output);
 			System.out.println(demo.predict(sample));
-			if(i != lastResult)
+			if(
 			buttonMove(i);
-			lastResult = i;
 			output = "";
 		}
 		}

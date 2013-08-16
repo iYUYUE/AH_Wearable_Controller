@@ -192,7 +192,7 @@ public class SensorGraph extends Activity {
     	int index;
     	double sample[];
     	svm_predict demo;
-    	int lastResult;
+    	
     	public DataHandler() throws IOException, InterruptedException {
     		AssetManager assetManager = getAssets();
     		
@@ -212,7 +212,7 @@ public class SensorGraph extends Activity {
     		writable = true;
     		//Initialize variables
     		output = "";
-    		lastResult = 0;
+    		lastOutput = "";
     		index = 0;
     	}
 		@Override
@@ -242,9 +242,7 @@ public class SensorGraph extends Activity {
 			double i=demo.predict(sample);
 			System.out.println(output);
 			System.out.println(demo.predict(sample));
-			if(i != lastResult)
 			buttonMove(i);
-			lastResult = i;
 			output = "";
 		}
 		}
