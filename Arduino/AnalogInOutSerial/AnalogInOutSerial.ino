@@ -58,10 +58,18 @@ void loop() {
   // change the analog out value:
   analogWrite(analogOutPinY, outputValueY);  
   analogWrite(analogOutPinX, outputValueX); 
-  
-  meetAndroid.send(sensorValueX);
-  meetAndroid.send(sensorValueY);
-
+  String result = "";
+  result += outputValueY;
+  result += ",";
+  result += outputValueX;
+  result += ",";
+  char charBuf[8];
+  result.toCharArray(charBuf, 8);
+  meetAndroid.send(charBuf);
+//  meetAndroid.send();
+//  meetAndroid.send();
+//  meetAndroid.send(",");
+Serial1.println(charBuf);
   if(digitalRead(digitalInPinZ)){
     digitalWrite(digitalOutPinZ, LOW);
   }
@@ -71,13 +79,13 @@ void loop() {
       
 
   // print the results to the serial monitor:  
-  Serial1.print(outputValueY, DEC);  
-  Serial1.print("," );              
-  Serial1.print(outputValueX, DEC);
-  Serial1.print(","); 
+//  Serial1.print(outputValueY, DEC);  
+//  Serial1.print(",");              
+//  Serial1.print(outputValueX, DEC);
+//  Serial1.print(","); 
 
   // wait 2 milliseconds before the next loop
   // for the analog-to-digital converter to settle
   // after the last reading:
-  delay(100);                     
+  delay(500);                     
 }
