@@ -29,8 +29,10 @@ public class vote {
 	
 	private static int judge() {
 		int max = 0;
-		for(int i : resultTank) voteBoard[i - 1]++;
-		for(int i = 0;i < 4;i++) if(voteBoard[i] > max) max = i;
+		for(int i : resultTank) {
+			if(i < 5)	voteBoard[i - 1] += 2;
+			else voteBoard[i - 1]++;
+		for(int i : voteBoard) if(i > max) max = i;
 		return max;
 	}
 }
