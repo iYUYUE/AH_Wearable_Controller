@@ -10,8 +10,10 @@
         android:id="@+id/button_move"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="28dp"
         android:layout_weight="0.62"
         android:src="@drawable/picture" />
   

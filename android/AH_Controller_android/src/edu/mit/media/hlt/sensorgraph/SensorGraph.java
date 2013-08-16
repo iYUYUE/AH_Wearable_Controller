@@ -54,7 +54,7 @@ public class SensorGraph extends Activity {
 	private static final String DEVICE_ADDRESS =  "7F:67:DA:66:5E:0A"; //"00:06:66:03:73:7B";
 	
 	//private GraphView mGraph; 
-	private TextView mValueTV;
+	//private TextView mValueTV;
 	
 	private ArduinoReceiver arduinoReceiver;
 	
