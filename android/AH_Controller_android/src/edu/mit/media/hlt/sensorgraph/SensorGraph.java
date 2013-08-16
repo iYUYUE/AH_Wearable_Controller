@@ -33,7 +33,6 @@ import android.os.Bundle;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import at.abraxas.amarino.Amarino;
 import at.abraxas.amarino.AmarinoIntent;
 
@@ -213,7 +212,6 @@ public class SensorGraph extends Activity {
 			
     		//Initialize fields
     		output = "";
-    		lastResult = 0;
     	}
 		@Override
 		public void run() {
@@ -242,7 +240,8 @@ public class SensorGraph extends Activity {
 			int i= (int) demo.predict(sample);
 //			System.out.println(output);
 			System.out.println(i);
-			buttonMove(vote.sendToJudge(i););
+			int result = vote.sendToJudge(i);
+			buttonMove(result);
 			output = "";
 		}
 	}

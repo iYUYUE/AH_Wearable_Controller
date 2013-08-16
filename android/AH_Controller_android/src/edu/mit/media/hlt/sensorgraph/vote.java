@@ -4,9 +4,9 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 public class vote {
-	Deque<Integer> resultTank;
-	int result;
-	int voteBoard[];
+	static Deque<Integer> resultTank;
+	static int result;
+	static int voteBoard[];
 
 	public vote() {
 		resultTank = new ArrayDeque<Integer>();
@@ -15,7 +15,7 @@ public class vote {
 	}
 	
 	
-	public int sendToJudge(int resultOnce) {
+	public static int sendToJudge(int resultOnce) {
 		resultTank.addLast(resultOnce);
 		
 		while(resultTank.size() > 6) {
@@ -27,10 +27,10 @@ public class vote {
 		return result;
 	}
 	
-	private int judge() {
+	private static int judge() {
 		int max = 0;
-		for(int i : resultTank) voteBoard[i]++;
-		for(int i : voteBoard) if(i > max) max = i;
+		for(int i : resultTank) voteBoard[i - 1]++;
+		for(int i = 0;i < 4;i++) if(voteBoard[i] > max) max = i;
 		return max;
 	}
 }
