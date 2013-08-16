@@ -61,7 +61,7 @@ public class SensorGraph extends Activity {
 	private ImageView btnMove;
 	private RelativeLayout.LayoutParams params;
 	private int yCoord = 100, xCoord = 500;
-
+    private final static int SPEED=25;
 
     /** Called when the activity is first created. */
     @Override
@@ -192,7 +192,7 @@ public class SensorGraph extends Activity {
     	int index;
     	double sample[];
     	svm_predict demo;
-    	
+    	int lastResult;
     	public DataHandler() throws IOException, InterruptedException {
     		AssetManager assetManager = getAssets();
     		
@@ -212,7 +212,7 @@ public class SensorGraph extends Activity {
     		writable = true;
     		//Initialize variables
     		output = "";
-    		lastOutput = "";
+    		lastResult = 0;
     		index = 0;
     	}
 		@Override
@@ -240,9 +240,11 @@ public class SensorGraph extends Activity {
 		        sample[i] = Double.parseDouble(parseToDouble[i]);
 		     }
 			double i=demo.predict(sample);
-			System.out.println(output);
+//			System.out.println(output);
 			System.out.println(demo.predict(sample));
+			if(i != lastResult)
 			buttonMove(i);
+			lastResult = (int) i;
 			output = "";
 		}
 		}
@@ -256,7 +258,7 @@ public class SensorGraph extends Activity {
 		switch(n){
 		case 1: 
 			   if (xCoord > 0.0) {
-			             xCoord -= 5;
+			             xCoord -=SPEED;
 			
 			             params.leftMargin = xCoord;
 			             params.topMargin = yCoord;
@@ -267,7 +269,7 @@ public class SensorGraph extends Activity {
 		
 		case 2: 
 			     if (yCoord > 0.0) {
-			             yCoord -= 5;
+			             yCoord -=SPEED;
 			             
 			             params.leftMargin = xCoord;
 			             params.topMargin  = yCoord;
@@ -280,7 +282,7 @@ public class SensorGraph extends Activity {
 		
 		
 		case 3:  
-			     xCoord += 5;
+			     xCoord +=SPEED;
 		
 			     params.leftMargin = xCoord;
 	             params.topMargin  = yCoord;
@@ -288,7 +290,7 @@ public class SensorGraph extends Activity {
 		         break;
 	              
 	    case 4:  
-	    	     yCoord += 5;
+	    	     yCoord += SPEED;
 			  
 	    	     params.leftMargin = xCoord;
 	             params.topMargin  = yCoord;
