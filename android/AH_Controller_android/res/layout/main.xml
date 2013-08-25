@@ -16,5 +16,17 @@
         android:layout_marginTop="28dp"
         android:layout_weight="0.62"
         android:src="@drawable/picture" />
+
+    <TextView
+        android:id="@+id/value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_weight="6"
+        android:background="#fff"
+        android:gravity="center"
+        android:text="@string/hello"
+        android:textSize="40sp" />
   
 </RelativeLayout>

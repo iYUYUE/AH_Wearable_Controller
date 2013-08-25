@@ -33,6 +33,7 @@ import android.os.Bundle;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import at.abraxas.amarino.Amarino;
 import at.abraxas.amarino.AmarinoIntent;
 
@@ -56,7 +57,8 @@ public class SensorGraph extends Activity {
 	//private TextView mValueTV;
 	
 	private ArduinoReceiver arduinoReceiver;
-	
+	private TextView text;
+    private String str="";
 	private ImageView btnMove;
 	private RelativeLayout.LayoutParams params;
 	private int yCoord = 100, xCoord = 500;
@@ -66,9 +68,10 @@ public class SensorGraph extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         arduinoReceiver = new ArduinoReceiver();
         setContentView(R.layout.main);
+         
+        text = (TextView)findViewById(R.id.value);
         
         params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT); //WRAP_CONTENT param can be FILL_PARENT
         params.leftMargin = xCoord; //XCOORD
@@ -189,6 +192,7 @@ public class SensorGraph extends Activity {
     	double sample[];
     	svm_predict demo;
 		vote voter;
+		int lastResult;
 		
 		
     	public DataHandler() throws IOException, InterruptedException {
@@ -212,6 +216,7 @@ public class SensorGraph extends Activity {
 			
     		//Initialize fields
     		output = "";
+    		lastResult = 0;
     	}
 		@Override
 		public void run() {
@@ -239,9 +244,12 @@ public class SensorGraph extends Activity {
 		     }
 			int i= (int) demo.predict(sample);
 //			System.out.println(output);
-			System.out.println(i);
+//			System.out.println(i);
 			int result = vote.sendToJudge(i);
-			buttonMove(result);
+			System.out.println(result);
+			if(result != lastResult)
+				buttonMove(result);
+			lastResult = result;
 			output = "";
 		}
 	}
@@ -258,15 +266,19 @@ public class SensorGraph extends Activity {
 							 params.leftMargin = xCoord;
 							 params.topMargin = yCoord;
 							 btnMove.setLayoutParams(params);
+							 str += "left\n";
+							 text.setText(str);
 					} 
 					break;
 			
-				case 2: 
+				case 4: 
 					 if (yCoord > 0.0) {
 						yCoord -=SPEED;
 						params.leftMargin = xCoord;
 						params.topMargin  = yCoord;
 						btnMove.setLayoutParams(params);
+						str += "up\n";
+						text.setText(str);
 					 }
 					 break;
 					 
@@ -275,13 +287,17 @@ public class SensorGraph extends Activity {
 						params.leftMargin = xCoord;
 						params.topMargin  = yCoord;
 						btnMove.setLayoutParams(params);
+						str += "right\n";
+						text.setText(str);
 						break;
 						  
-				case 4:  
+				case 2:  
 						yCoord += SPEED;
 						params.leftMargin = xCoord;
 						params.topMargin  = yCoord;
 						btnMove.setLayoutParams(params);
+						str += "down\n";
+						text.setText(str);
 						break;
 						
 			   default: break;
